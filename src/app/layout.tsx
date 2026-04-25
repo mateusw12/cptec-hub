@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "IBGE Hub",
-  description: "Explore dados geográficos e populacionais do Brasil via IBGE",
+  title: "Brasil Api Hub",
+  description: "Hub de consultas BrasilAPI: IBGE, CEP, CNPJ, CVM e taxas",
 };
 
 export default function RootLayout({

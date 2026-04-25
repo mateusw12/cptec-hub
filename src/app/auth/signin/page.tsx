@@ -59,15 +59,15 @@ function SignInContent() {
         <Logo>
           <CloudSun size={26} color={theme.colors.secondary} />
           <LogoText>
-            CPTEC <span>HUB</span>
+            Brasil API <span>Hub</span>
           </LogoText>
         </Logo>
 
         <Headline>
-          <Title>Bem-vindo ao CPTEC Hub</Title>
+          <Title>Bem-vindo ao Brasil Api Hub</Title>
           <Subtitle>
-            Dashboard de dados meteorológicos do Brasil. Acesse com sua conta
-            Google para continuar.
+            Plataforma de consultas da BrasilAPI para dados públicos do Brasil.
+            Acesse com sua conta Google para continuar.
           </Subtitle>
         </Headline>
 
@@ -79,8 +79,8 @@ function SignInContent() {
         </GoogleButton>
 
         <Footer>
-          Ao entrar, você concorda com o uso dos dados climáticos do CPTEC via
-          BrasilAPI para fins de visualização.
+          Ao entrar, você concorda com o uso dos dados públicos da BrasilAPI
+          para fins de visualização.
         </Footer>
       </Card>
     </Page>

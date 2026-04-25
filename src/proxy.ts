@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // Rotas públicas — não exigem autenticação
-const PUBLIC_PATHS = ["/auth/signin", "/api/auth", "/api/ibge"];
+const PUBLIC_PATHS = ["/auth/signin", "/api/auth", "/api/ibge", "/api/brasil"];
 
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;

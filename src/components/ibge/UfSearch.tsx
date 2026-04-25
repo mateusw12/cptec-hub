@@ -1,12 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import styled from "@emotion/styled";
 import { Search, X } from "lucide-react";
 import { theme } from "@/styles/theme";
-import { useLocations } from "@/hooks/useLocations";
-import { useIbgeStore } from "@/store/ibgeStore";
-import type { UfDTO } from "@/lib/dtos";
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
 

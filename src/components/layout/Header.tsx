@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "@emotion/styled";
-import { Map, Hash } from "lucide-react";
+import { Map, Hash, Building2, Landmark, Percent } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { theme } from "@/styles/theme";
@@ -84,7 +84,7 @@ export function Header() {
         <Logo>
           <Map size={22} color={theme.colors.secondary} />
           <LogoText>
-            IBGE <span>Hub</span>
+            Brasil API <span>Hub</span>
           </LogoText>
         </Logo>
         <Nav>
@@ -95,6 +95,18 @@ export function Header() {
           <NavLink href="/cep" $active={pathname === "/cep"}>
             <Hash size={14} />
             CEP
+          </NavLink>
+          <NavLink href="/cnpj" $active={pathname === "/cnpj"}>
+            <Building2 size={14} />
+            CNPJ
+          </NavLink>
+          <NavLink href="/cvm" $active={pathname === "/cvm"}>
+            <Landmark size={14} />
+            CVM
+          </NavLink>
+          <NavLink href="/taxas" $active={pathname === "/taxas"}>
+            <Percent size={14} />
+            Taxas
           </NavLink>
         </Nav>
       </Inner>
