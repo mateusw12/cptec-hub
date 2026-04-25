@@ -1,37 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
-import { CptecService } from "@/services/cptec/cptec";
-import { IbgeService } from "@/services/ibge/ibge";
+import { useEstados } from "./useIbge";
+import type { UfDTO } from "@/lib/dtos";
 
-const QUERY_KEYS = {
-  cities: (term: string) => ["locations", "cities", term] as const,
-  municipios: (uf: string) => ["locations", "municipios", uf] as const,
-};
-
+// Filtra estados localmente a partir da lista já carregada — evita requisições extras
 export function useLocations(searchTerm: string) {
-  const trimmed = searchTerm.trim();
+  const { data: estados, isLoading, isError, error } = useEstados();
+  const trimmed = searchTerm.trim().toLowerCase();
 
-  const query = useQuery({
-    queryKey: QUERY_KEYS.cities(trimmed),
-    queryFn: () => CptecService.getCitiesByName(trimmed),
-    enabled: trimmed.length >= 2,
-    staleTime: 1000 * 60 * 30, // 30 min - localidades mudam pouco
-  });
+  const filtered: UfDTO[] =
+    trimmed.length >= 1
+      ? (estados ?? []).filter(
+          (uf) =>
+            uf.nome.toLowerCase().includes(trimmed) ||
+            uf.sigla.toLowerCase().includes(trimmed) ||
+            uf.regiao.nome.toLowerCase().includes(trimmed),
+        )
+      : (estados ?? []);
 
-  return {
-    cities: query.data ?? [],
-    isLoading: query.isLoading,
-    isError: query.isError,
-    error: query.error,
-  };
-}
-
-export function useMunicipios(siglaUF: string) {
-  const uf = siglaUF.trim().toUpperCase();
-
-  return useQuery({
-    queryKey: QUERY_KEYS.municipios(uf),
-    queryFn: () => IbgeService.getMunicipiosByUF(uf),
-    enabled: uf.length === 2,
-    staleTime: 1000 * 60 * 60, // 1 hora
-  });
+  return { states: filtered, isLoading, isError, error };
 }

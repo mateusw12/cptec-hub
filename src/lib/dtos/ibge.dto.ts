@@ -1,3 +1,29 @@
+// DTO: Região
+export interface RegiaoDTO {
+  id: number;
+  sigla: string;
+  nome: string;
+}
+
+// DTO: Estado (UF)
+export interface UfDTO {
+  id: number;
+  sigla: string;
+  nome: string;
+  regiao: RegiaoDTO;
+  populacao_estimada: number;
+  periodo: string;
+}
+
+export type UfsResponseDTO = UfDTO[];
+
+// DTO: Erro 404 - UF não encontrada
+export interface UfNotFoundErrorDTO {
+  name: "NotFoundError";
+  message: string;
+  type: "not_found";
+}
+
 // DTO: Município do IBGE
 export interface MunicipioDTO {
   nome: string;
@@ -13,7 +39,7 @@ export interface UfBadRequestDTO {
   type: "bad_request";
 }
 
-// DTO: Erro 404 - Estado não encontrado
+// DTO: Erro 404 - Estado não encontrado (municípios)
 export interface EstadoNotFoundDTO {
   name: "EstadoNotFoundException";
   message: string;

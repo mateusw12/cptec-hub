@@ -1,9 +1,8 @@
 "use client";
 
 import styled from "@emotion/styled";
-import { CloudSun } from "lucide-react";
+import { Map } from "lucide-react";
 import { theme } from "@/styles/theme";
-import { CitySearch } from "@/components/weather/CitySearch";
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
 
@@ -43,12 +42,6 @@ const LogoText = styled.span`
   }
 `;
 
-const SearchWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-`;
-
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export function Header() {
@@ -56,14 +49,11 @@ export function Header() {
     <HeaderWrapper>
       <Inner>
         <Logo>
-          <CloudSun size={22} color={theme.colors.secondary} />
+          <Map size={22} color={theme.colors.secondary} />
           <LogoText>
-            CPTEC <span>HUB</span>
+            IBGE <span>HUB</span>
           </LogoText>
         </Logo>
-        <SearchWrapper>
-          <CitySearch />
-        </SearchWrapper>
       </Inner>
     </HeaderWrapper>
   );

@@ -1,5 +1,5 @@
 import { Header } from "@/components/layout";
-import { CapitalsGrid } from "@/components/weather";
+import { EstadosGrid } from "@/components/ibge";
 import {
   PageMain,
   SectionHeader,
@@ -14,10 +14,10 @@ export default function HomePage() {
       <PageMain>
         <section>
           <SectionHeader>
-            <SectionTitle>Condições nas Capitais</SectionTitle>
-            <SectionSubtitle>atualizado em tempo real</SectionSubtitle>
+            <SectionTitle>Estados do Brasil</SectionTitle>
+            <SectionSubtitle>dados populacionais IBGE 2024</SectionSubtitle>
           </SectionHeader>
-          <CapitalsGrid />
+          <EstadosGrid />
         </section>
       </PageMain>
     </>
