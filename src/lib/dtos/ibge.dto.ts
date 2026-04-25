@@ -24,13 +24,30 @@ export interface UfNotFoundErrorDTO {
   type: "not_found";
 }
 
-// DTO: Município do IBGE
+// DTO: Município do IBGE (API interna)
 export interface MunicipioDTO {
   nome: string;
   codigo_ibge: string;
 }
 
 export type MunicipiosResponseDTO = MunicipioDTO[];
+
+// DTO: Município da API de Localidades (v1/localidades/estados/{uf}/municipios)
+export interface LocalidadeMunicipioDTO {
+  id?: number;
+  nome: string;
+  codigo_ibge?: string;
+  microrregiao?: {
+    id: number;
+    nome: string;
+    mesorregiao?: {
+      id: number;
+      nome: string;
+    };
+  };
+}
+
+export type LocalidadeMunicipiosResponseDTO = LocalidadeMunicipioDTO[];
 
 // DTO: Erro 400 - UF inválida
 export interface UfBadRequestDTO {

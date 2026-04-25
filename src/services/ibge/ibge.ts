@@ -1,6 +1,5 @@
 import { apiFetch } from "@/lib/api";
-import { MunicipiosResponseDTO, UfDTO, UfsResponseDTO } from "@/lib/dtos";
-import type { FeatureCollection } from "geojson";
+import { LocalidadeMunicipiosResponseDTO, UfDTO, UfsResponseDTO } from "@/lib/dtos";
 
 const IAPI_PATH = "/ibge";
 
@@ -13,21 +12,12 @@ export class IbgeService {
     return apiFetch<UfDTO>(`${IAPI_PATH}/uf/v1/${code}`);
   }
 
-  static async getMunicipiosByUF(
+  static async getLocalidadesMunicipios(
     siglaUF: string,
-  ): Promise<MunicipiosResponseDTO> {
+  ): Promise<LocalidadeMunicipiosResponseDTO> {
     const uf = siglaUF.toUpperCase();
-    return apiFetch<MunicipiosResponseDTO>(`${IAPI_PATH}/municipios/v1/${uf}`);
-  }
-
-  static async getMalhaEstado(ufId: number): Promise<FeatureCollection> {
-    const params = new URLSearchParams({
-      formato: "application/vnd.geo+json",
-      qualidade: "minima",
-      intrarregiao: "municipio",
-    });
-    const res = await fetch(`/api/ibge/v3/malhas/estados/${ufId}?${params}`);
-    if (!res.ok) throw new Error(`Malha API ${res.status}`);
-    return res.json() as Promise<FeatureCollection>;
+    return apiFetch<LocalidadeMunicipiosResponseDTO>(
+      `${IAPI_PATH}/v1/localidades/estados/${uf}/municipios`,
+    );
   }
 }

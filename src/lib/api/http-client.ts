@@ -1,4 +1,4 @@
-const BASE_URL = "https://brasilapi.com.br/api";
+const BASE_URL = "/api";
 
 export class ApiError extends Error {
   constructor(
@@ -21,6 +21,8 @@ export async function apiFetch<T>(
     ...options,
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "User-Agent": "Mozilla/5.0",
       ...options?.headers,
     },
   });

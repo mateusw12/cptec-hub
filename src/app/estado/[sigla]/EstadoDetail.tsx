@@ -11,13 +11,13 @@ import {
   RefreshCw,
 } from "lucide-react";
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { theme } from "@/styles/theme";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Skeleton, SkeletonCard, SkeletonText } from "@/components/ui/Skeleton";
-import { useEstado, useMunicipios, useMalhaEstado } from "@/hooks/useIbge";
-import { EstadoMapDynamic } from "@/components/ibge/EstadoMapDynamic";
+import { useEstado, useLocalidadesMunicipios } from "@/hooks/useIbge";
+import { IbgeService } from "@/services";
 
 type BadgeVariant = "default" | "accent" | "warning" | "danger" | "secondary";
 
@@ -169,14 +169,51 @@ const MunicipioList = styled.ul`
 
 const MunicipioItem = styled.li`
   display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
+  flex-direction: column;
+  gap: 2px;
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   background: ${theme.colors.surface};
   border: 1px solid ${theme.colors.border};
   border-radius: ${theme.borderRadius.md};
+`;
+
+const MunicipioHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${theme.spacing.sm};
+`;
+
+const MunicipioName = styled.span`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
   font-size: 0.875rem;
+  font-weight: 600;
   color: ${theme.colors.text};
+`;
+
+const MunicipioCode = styled.span`
+  font-size: 0.7rem;
+  color: ${theme.colors.textMuted};
+  background: ${theme.colors.surfaceHover};
+  border: 1px solid ${theme.colors.border};
+  border-radius: ${theme.borderRadius.sm};
+  padding: 1px 6px;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+`;
+
+const MunicipioMeta = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+  flex-wrap: wrap;
+`;
+
+const MunicipioMetaItem = styled.span`
+  font-size: 0.75rem;
+  color: ${theme.colors.textMuted};
 `;
 
 const EmptyMsg = styled.p`
@@ -238,28 +275,14 @@ interface EstadoDetailProps {
 export function EstadoDetail({ sigla }: EstadoDetailProps) {
   const [search, setSearch] = useState("");
 
-  const {
-    data: uf,
-    isLoading: ufLoading,
-    isError: ufError,
-  } = useEstado(sigla);
+  const { data: uf, isLoading: ufLoading, isError: ufError } = useEstado(sigla);
 
   const {
     data: municipios,
     isLoading: munLoading,
     isError: munError,
     refetch: munRefetch,
-  } = useMunicipios(sigla);
-
-  const { data: malha, isLoading: malhaLoading } = useMalhaEstado(uf?.id);
-
-  const nomesPorCodigo = useMemo(() => {
-    const lookup: Record<string, string> = {};
-    for (const m of municipios ?? []) {
-      lookup[m.codigo_ibge] = m.nome;
-    }
-    return lookup;
-  }, [municipios]);
+  } = useLocalidadesMunicipios(sigla);
 
   const filtered = (municipios ?? []).filter((m) =>
     m.nome.toLowerCase().includes(search.toLowerCase()),
@@ -276,9 +299,19 @@ export function EstadoDetail({ sigla }: EstadoDetailProps) {
       {ufLoading ? (
         <HeroCard>
           <SkeletonCard>
-            <Skeleton width="96px" height="96px" borderRadius={theme.borderRadius.lg} />
+            <Skeleton
+              width="96px"
+              height="96px"
+              borderRadius={theme.borderRadius.lg}
+            />
           </SkeletonCard>
-          <div style={{ display: "flex", flexDirection: "column", gap: theme.spacing.sm }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: theme.spacing.sm,
+            }}
+          >
             <Skeleton width="180px" height="28px" />
             <Skeleton width="120px" height="16px" />
             <Skeleton width="220px" height="16px" />
@@ -313,19 +346,6 @@ export function EstadoDetail({ sigla }: EstadoDetailProps) {
           </InfoBlock>
         </HeroCard>
       )}
-
-      {/* Mapa */}
-      <section>
-        <SectionHeader>
-          <Map size={18} color={theme.colors.secondary} />
-          <SectionTitle>Mapa por município</SectionTitle>
-        </SectionHeader>
-        {malhaLoading ? (
-          <Skeleton height="420px" borderRadius={theme.borderRadius.lg} />
-        ) : malha ? (
-          <EstadoMapDynamic geoJson={malha} nomesPorCodigo={nomesPorCodigo} />
-        ) : null}
-      </section>
 
       {/* Municípios */}
       <section>
@@ -369,9 +389,24 @@ export function EstadoDetail({ sigla }: EstadoDetailProps) {
         ) : (
           <MunicipioList>
             {filtered.map((m) => (
-              <MunicipioItem key={m.nome}>
-                <Building2 size={13} color={theme.colors.textMuted} />
-                {m.nome}
+              <MunicipioItem key={m.codigo_ibge ?? String(m.id ?? m.nome)}>
+                <MunicipioHeader>
+                  <MunicipioName>
+                    <Building2 size={13} color={theme.colors.textMuted} />
+                    {m.nome}
+                  </MunicipioName>
+                  <MunicipioCode>
+                    {m.codigo_ibge ?? String(m.id ?? "-")}
+                  </MunicipioCode>
+                </MunicipioHeader>
+                <MunicipioMeta>
+                  <MunicipioMetaItem>
+                    Microrregião: {m.microrregiao?.nome ?? "N/D"}
+                  </MunicipioMetaItem>
+                  <MunicipioMetaItem>
+                    Mesorregião: {m.microrregiao?.mesorregiao?.nome ?? "N/D"}
+                  </MunicipioMetaItem>
+                </MunicipioMeta>
               </MunicipioItem>
             ))}
           </MunicipioList>
