@@ -1,8 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  getOceanForecast,
-  getOceanForecastByDays,
-} from "@/services/api/cptec";
+import { CptecService } from "@/services/api/cptec";
 
 const QUERY_KEYS = {
   ocean: (cityCode: number) => ["ocean", cityCode] as const,
@@ -13,7 +10,7 @@ const QUERY_KEYS = {
 export function useOcean(cityCode: number | null) {
   return useQuery({
     queryKey: QUERY_KEYS.ocean(cityCode!),
-    queryFn: () => getOceanForecast(cityCode!),
+    queryFn: () => CptecService.getOceanForecast(cityCode!),
     enabled: cityCode !== null,
     staleTime: 1000 * 60 * 10,
   });
@@ -25,7 +22,7 @@ export function useOceanByDays(
 ) {
   return useQuery({
     queryKey: QUERY_KEYS.oceanDays(cityCode!, days),
-    queryFn: () => getOceanForecastByDays(cityCode!, days),
+    queryFn: () => CptecService.getOceanForecastByDays(cityCode!, days),
     enabled: cityCode !== null,
     staleTime: 1000 * 60 * 10,
   });
