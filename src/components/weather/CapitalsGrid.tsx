@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "@emotion/styled";
+import { RefreshCw, CloudOff } from "lucide-react";
 import { theme } from "@/styles/theme";
 import { useCapitalsWeather } from "@/hooks/useWeather";
 import { CapitalCard } from "./CapitalCard";
@@ -14,13 +15,47 @@ const Grid = styled.div`
   gap: ${theme.spacing.md};
 `;
 
-const ErrorMessage = styled.p`
-  color: ${theme.colors.danger};
-  font-size: 0.875rem;
-  padding: ${theme.spacing.md};
-  background: ${theme.colors.danger}11;
+const ErrorBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${theme.spacing.md};
+  padding: ${theme.spacing["2xl"]};
+  background: ${theme.colors.danger}0d;
   border: 1px solid ${theme.colors.danger}33;
+  border-radius: ${theme.borderRadius.lg};
+  text-align: center;
+`;
+
+const ErrorTitle = styled.p`
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: ${theme.colors.danger};
+  margin: 0;
+`;
+
+const ErrorHint = styled.p`
+  font-size: 0.8rem;
+  color: ${theme.colors.textMuted};
+  margin: 0;
+`;
+
+const RetryButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  padding: 8px 18px;
+  background: transparent;
+  border: 1px solid ${theme.colors.danger}66;
   border-radius: ${theme.borderRadius.md};
+  color: ${theme.colors.danger};
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: ${theme.colors.danger}1a;
+  }
 `;
 
 // ─── Skeleton placeholder ─────────────────────────────────────────────────────
@@ -51,7 +86,8 @@ function CapitalCardSkeleton() {
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export function CapitalsGrid() {
-  const { data, isLoading, isError } = useCapitalsWeather();
+  const { data, isLoading, isError, isFetching, refetch } =
+    useCapitalsWeather();
 
   if (isLoading) {
     return (
@@ -65,9 +101,20 @@ export function CapitalsGrid() {
 
   if (isError) {
     return (
-      <ErrorMessage>
-        Não foi possível carregar as condições das capitais. Tente novamente.
-      </ErrorMessage>
+      <ErrorBox>
+        <CloudOff size={32} color={theme.colors.danger} />
+        <div>
+          <ErrorTitle>Serviço temporariamente indisponível</ErrorTitle>
+          <ErrorHint>
+            A API do CPTEC está instável no momento. Os dados serão
+            exibidos assim que o serviço se recuperar.
+          </ErrorHint>
+        </div>
+        <RetryButton onClick={() => refetch()} disabled={isFetching}>
+          <RefreshCw size={13} />
+          {isFetching ? "Tentando..." : "Tentar novamente"}
+        </RetryButton>
+      </ErrorBox>
     );
   }
 
@@ -79,3 +126,4 @@ export function CapitalsGrid() {
     </Grid>
   );
 }
+

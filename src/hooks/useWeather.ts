@@ -48,5 +48,11 @@ export function useCapitalsWeather() {
     queryKey: QUERY_KEYS.capitals(),
     queryFn: CptecService.getCapitalsWeather,
     staleTime: 1000 * 60 * 15, // 15 min
+    retry: (failureCount, error) => {
+      // Não reintentar em 404; reintentar 500 até 4 vezes
+      if ((error as { status?: number }).status === 404) return false;
+      return failureCount < 4;
+    },
+    retryDelay: (attempt) => Math.min(1500 * 2 ** attempt, 20000),
   });
 }
