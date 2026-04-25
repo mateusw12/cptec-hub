@@ -18,8 +18,6 @@ import {
   Title,
 } from "./page.styles";
 
-// ─── Google SVG logo ──────────────────────────────────────────────────────────
-
 function GoogleLogo() {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
@@ -42,8 +40,6 @@ function GoogleLogo() {
     </svg>
   );
 }
-
-// ─── Component ───────────────────────────────────────────────────────────────
 
 function SignInContent() {
   const searchParams = useSearchParams();
