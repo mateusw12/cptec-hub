@@ -5,6 +5,7 @@ const QUERY_KEYS = {
   estados: () => ["ibge", "estados"] as const,
   estado: (code: string | number) => ["ibge", "estado", code] as const,
   municipios: (uf: string) => ["ibge", "municipios", uf] as const,
+  malha: (ufId: number) => ["ibge", "malha", ufId] as const,
 };
 
 export function useEstados() {
@@ -36,5 +37,14 @@ export function useMunicipios(siglaUF: string) {
     queryFn: () => IbgeService.getMunicipiosByUF(uf),
     enabled: uf.length === 2,
     staleTime: 1000 * 60 * 60,
+  });
+}
+
+export function useMalhaEstado(ufId: number | undefined) {
+  return useQuery({
+    queryKey: QUERY_KEYS.malha(ufId!),
+    queryFn: () => IbgeService.getMalhaEstado(ufId!),
+    enabled: ufId != null,
+    staleTime: 1000 * 60 * 60 * 24, // 24h — GeoJSON muda raramente
   });
 }

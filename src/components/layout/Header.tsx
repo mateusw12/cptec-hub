@@ -51,7 +51,7 @@ export function Header() {
         <Logo>
           <Map size={22} color={theme.colors.secondary} />
           <LogoText>
-            IBGE <span>HUB</span>
+            IBGE <span>Hub</span>
           </LogoText>
         </Logo>
       </Inner>

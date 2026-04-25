@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CPTEC Hub",
-  description: "Dashboard climático com dados meteorológicos do CPTEC via BrasilAPI",
+  title: "IBGE Hub",
+  description: "Explore dados geográficos e populacionais do Brasil via IBGE",
 };
 
 export default function RootLayout({

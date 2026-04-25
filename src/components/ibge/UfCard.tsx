@@ -5,6 +5,7 @@ import { Users, MapPin } from "lucide-react";
 import { theme } from "@/styles/theme";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { useRouter } from "next/navigation";
 import { useIbgeStore } from "@/store/ibgeStore";
 import type { UfDTO } from "@/lib/dtos";
 
@@ -69,7 +70,8 @@ const MetaItem = styled.div`
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function formatPopulacao(pop: number): string {
+function formatPopulacao(pop: number | undefined | null): string {
+  if (pop == null) return "–";
   if (pop >= 1_000_000) return `${(pop / 1_000_000).toFixed(1)}M`;
   if (pop >= 1_000) return `${(pop / 1_000).toFixed(0)}K`;
   return pop.toString();
@@ -93,8 +95,14 @@ interface UfCardProps {
 }
 
 export function UfCard({ data }: UfCardProps) {
+  const router = useRouter();
   const { selectedUf, setSelectedUf } = useIbgeStore();
   const isSelected = selectedUf?.sigla === data.sigla;
+
+  function handleSelect() {
+    setSelectedUf(data);
+    router.push(`/estado/${data.sigla}`);
+  }
 
   return (
     <StyledCard
@@ -102,8 +110,8 @@ export function UfCard({ data }: UfCardProps) {
       role="button"
       tabIndex={0}
       aria-pressed={isSelected}
-      onClick={() => setSelectedUf(data)}
-      onKeyDown={(e) => e.key === "Enter" && setSelectedUf(data)}
+      onClick={handleSelect}
+      onKeyDown={(e) => e.key === "Enter" && handleSelect()}
     >
       <Header>
         <SiglaWrapper>
