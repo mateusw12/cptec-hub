@@ -1,79 +1,33 @@
 "use client";
 
-import styled from "@emotion/styled";
-import { Landmark, Loader2, AlertCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Landmark,
+  Loader2,
+  AlertCircle,
+  ChevronLeft,
+  ChevronRight,
+  Grid,
+} from "lucide-react";
 import { useState } from "react";
-import { Header } from "@/components/layout";
-import { Card } from "@/components/ui/Card";
+import {
+  Header,
+  PageMain,
+  SectionHeader,
+  SectionSubtitle,
+  SectionTitle,
+} from "@/components/layout";
 import { useCorretoras, useFundos } from "@/hooks/useCvm";
-import { PageMain, SectionHeader, SectionSubtitle, SectionTitle } from "@/components/layout/PageShell";
+import { Card } from "@/components/ui/Card.styles";
 import { theme } from "@/styles/theme";
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: ${theme.spacing.md};
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: ${theme.spacing.md};
-`;
-
-const Label = styled.span`
-  font-size: 0.75rem;
-  color: ${theme.colors.textMuted};
-`;
-
-const Value = styled.p`
-  margin: 2px 0 0;
-  font-size: 0.88rem;
-  color: ${theme.colors.text};
-`;
-
-const Status = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  color: ${theme.colors.textMuted};
-`;
-
-const Controls = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: ${theme.spacing.sm};
-`;
-
-const Select = styled.select`
-  border: 1px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.md};
-  background: ${theme.colors.surface};
-  color: ${theme.colors.text};
-  padding: 6px 10px;
-`;
-
-const Button = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: ${theme.spacing.xs};
-  border: 1px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.md};
-  background: ${theme.colors.surface};
-  color: ${theme.colors.text};
-  padding: 6px 10px;
-  cursor: pointer;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
+import {
+  Status,
+  Row,
+  Label,
+  Value,
+  Controls,
+  Select,
+  Button,
+} from "./cvmPage.styles";
 
 export default function CvmPage() {
   const [page, setPage] = useState(1);
@@ -84,7 +38,9 @@ export default function CvmPage() {
   const fundos = useFundos(page, size);
 
   const fundosData = fundos.data?.data ?? [];
-  const statusOptions = Array.from(new Set(fundosData.map((f) => f.situacao).filter(Boolean))).sort();
+  const statusOptions = Array.from(
+    new Set(fundosData.map((f) => f.situacao).filter(Boolean)),
+  ).sort();
   const filteredFundos =
     statusFilter === "ALL"
       ? fundosData
@@ -103,7 +59,10 @@ export default function CvmPage() {
 
           {corretoras.isLoading ? (
             <Status>
-              <Loader2 size={16} style={{ animation: "spin 1s linear infinite" }} />
+              <Loader2
+                size={16}
+                style={{ animation: "spin 1s linear infinite" }}
+              />
               Carregando corretoras...
               <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
             </Status>
@@ -182,17 +141,28 @@ export default function CvmPage() {
               ))}
             </Select>
 
-            <Button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1 || fundos.isFetching}>
+            <Button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page <= 1 || fundos.isFetching}
+            >
               <ChevronLeft size={14} /> Anterior
             </Button>
-            <Button onClick={() => setPage((p) => p + 1)} disabled={fundos.isFetching || (fundos.data?.data?.length ?? 0) < size}>
+            <Button
+              onClick={() => setPage((p) => p + 1)}
+              disabled={
+                fundos.isFetching || (fundos.data?.data?.length ?? 0) < size
+              }
+            >
               Próxima <ChevronRight size={14} />
             </Button>
           </Controls>
 
           {fundos.isLoading ? (
             <Status>
-              <Loader2 size={16} style={{ animation: "spin 1s linear infinite" }} />
+              <Loader2
+                size={16}
+                style={{ animation: "spin 1s linear infinite" }}
+              />
               Carregando fundos...
             </Status>
           ) : fundos.isError ? (
@@ -200,32 +170,30 @@ export default function CvmPage() {
               <AlertCircle size={16} color={theme.colors.danger} />
               Erro ao carregar fundos.
             </Status>
+          ) : filteredFundos.length === 0 ? (
+            <Status>
+              <AlertCircle size={16} color={theme.colors.warning} />
+              Nenhum fundo encontrado para o status selecionado.
+            </Status>
           ) : (
-            filteredFundos.length === 0 ? (
-              <Status>
-                <AlertCircle size={16} color={theme.colors.warning} />
-                Nenhum fundo encontrado para o status selecionado.
-              </Status>
-            ) : (
-              <Grid style={{ marginTop: theme.spacing.md }}>
-                {filteredFundos.map((fundo) => (
-                  <Card key={`${fundo.codigo_cvm}-${fundo.cnpj}`}>
-                    <Label>Denominação Social</Label>
-                    <Value>{fundo.denominacao_social}</Value>
-                    <Row>
-                      <div>
-                        <Label>CNPJ</Label>
-                        <Value>{fundo.cnpj}</Value>
-                      </div>
-                      <div>
-                        <Label>Situação</Label>
-                        <Value>{fundo.situacao}</Value>
-                      </div>
-                    </Row>
-                  </Card>
-                ))}
-              </Grid>
-            )
+            <Grid style={{ marginTop: theme.spacing.md }}>
+              {filteredFundos.map((fundo) => (
+                <Card key={`${fundo.codigo_cvm}-${fundo.cnpj}`}>
+                  <Label>Denominação Social</Label>
+                  <Value>{fundo.denominacao_social}</Value>
+                  <Row>
+                    <div>
+                      <Label>CNPJ</Label>
+                      <Value>{fundo.cnpj}</Value>
+                    </div>
+                    <div>
+                      <Label>Situação</Label>
+                      <Value>{fundo.situacao}</Value>
+                    </div>
+                  </Row>
+                </Card>
+              ))}
+            </Grid>
           )}
         </section>
       </PageMain>

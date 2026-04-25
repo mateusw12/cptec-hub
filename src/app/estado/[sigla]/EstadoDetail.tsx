@@ -5,13 +5,11 @@ import {
   Users,
   Map,
   Building2,
-  Search,
   CloudOff,
   RefreshCw,
 } from "lucide-react";
 import { useState } from "react";
 import { theme } from "@/styles/theme";
-import { Badge } from "@/components/ui/Badge";
 import { Skeleton, SkeletonCard, SkeletonText } from "@/components/ui/Skeleton";
 import { useEstado, useLocalidadesMunicipios } from "@/hooks/useIbge";
 import { BadgeVariant, REGIAO_VARIANT } from "@/lib/enum";
@@ -28,8 +26,6 @@ import {
   MunicipioHeader,
   MunicipioItem,
   MunicipioList,
-  MunicipioMeta,
-  MunicipioMetaItem,
   MunicipioName,
   Nome,
   RetryButton,
@@ -42,15 +38,7 @@ import {
   Sigla,
   SiglaBlock,
 } from "./EstadoDetail.styles";
-
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function formatPopulacao(pop: number | undefined | null): string {
-  if (pop == null) return "–";
-  return new Intl.NumberFormat("pt-BR").format(pop);
-}
-
-// ─── Component ───────────────────────────────────────────────────────────────
+import { Badge } from "@/components/ui/Badge.styles";
 
 interface EstadoDetailProps {
   sigla: string;
@@ -71,6 +59,11 @@ export function EstadoDetail({ sigla }: EstadoDetailProps) {
   const filtered = (municipios ?? []).filter((m) =>
     m.nome.toLowerCase().includes(search.toLowerCase()),
   );
+
+  function formatPopulacao(pop: number | undefined | null): string {
+    if (pop == null) return "–";
+    return new Intl.NumberFormat("pt-BR").format(pop);
+  }
 
   return (
     <Container>
@@ -111,7 +104,12 @@ export function EstadoDetail({ sigla }: EstadoDetailProps) {
             <Sigla>{uf.sigla}</Sigla>
           </SiglaBlock>
           <InfoBlock>
-            <Badge variant={REGIAO_VARIANT[uf.regiao.nome as keyof typeof REGIAO_VARIANT] ?? BadgeVariant.DEFAULT}>
+            <Badge
+              variant={
+                REGIAO_VARIANT[uf.regiao.nome as keyof typeof REGIAO_VARIANT] ??
+                BadgeVariant.DEFAULT
+              }
+            >
               {uf.regiao.nome}
             </Badge>
             <Nome>{uf.nome}</Nome>

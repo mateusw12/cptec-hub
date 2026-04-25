@@ -1,10 +1,17 @@
-"use client";
-
 import styled from "@emotion/styled";
+import { BadgeVariant } from "@/lib/enum";
 import { theme } from "@/styles/theme";
 
-interface BadgeProps {
-  variant?: "default" | "accent" | "warning" | "danger" | "secondary";
+export type BadgeVariantValue =
+  | BadgeVariant
+  | "default"
+  | "accent"
+  | "warning"
+  | "danger"
+  | "secondary";
+
+export interface BadgeProps {
+  variant?: BadgeVariantValue;
 }
 
 const variantStyles: Record<NonNullable<BadgeProps["variant"]>, string> = {

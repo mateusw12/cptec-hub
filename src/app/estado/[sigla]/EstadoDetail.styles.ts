@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { Card } from "@/components/ui/Card";
 import { theme } from "@/styles/theme";
+import { Card } from "@/components/ui/Card.styles";
 
 export const Container = styled.div`
   max-width: 960px;

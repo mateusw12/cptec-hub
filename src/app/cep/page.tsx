@@ -2,13 +2,13 @@
 
 import { Search, Hash, AlertCircle, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { Header } from "@/components/layout";
 import {
+  Header,
   PageMain,
   SectionHeader,
-  SectionTitle,
   SectionSubtitle,
-} from "@/components/layout/PageShell";
+  SectionTitle,
+} from "@/components/layout";
 import { CepCard } from "@/components/cep";
 import { useCep } from "@/hooks/useCep";
 import { theme } from "@/styles/theme";

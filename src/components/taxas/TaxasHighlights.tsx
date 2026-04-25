@@ -1,10 +1,10 @@
 "use client";
 
 import { Percent, Loader2, AlertCircle } from "lucide-react";
-import { Card } from "@/components/ui/Card";
 import { useTaxas } from "@/hooks/useTaxas";
 import { theme } from "@/styles/theme";
 import { Grid, Status, TaxaNome, TaxaValor } from "./TaxasHighlights.styles";
+import { Card } from "../ui/Card.styles";
 
 export function TaxasHighlights() {
   const { data, isLoading, isError } = useTaxas();

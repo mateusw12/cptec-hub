@@ -2,7 +2,6 @@
 
 import { Users, MapPin } from "lucide-react";
 import { theme } from "@/styles/theme";
-import { Badge } from "@/components/ui/Badge";
 import { useRouter } from "next/navigation";
 import { useIbgeStore } from "@/store/ibgeStore";
 import { BadgeVariant, REGIAO_VARIANT } from "@/lib/enum";
@@ -16,6 +15,7 @@ import {
   SiglaWrapper,
   StyledCard,
 } from "./UfCard.styles";
+import { Badge } from "../ui/Badge.styles";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -55,7 +55,12 @@ export function UfCard({ data }: UfCardProps) {
         <SiglaWrapper>
           <Sigla>{data.sigla}</Sigla>
         </SiglaWrapper>
-        <Badge variant={REGIAO_VARIANT[data.regiao.nome as keyof typeof REGIAO_VARIANT] ?? BadgeVariant.DEFAULT}>
+        <Badge
+          variant={
+            REGIAO_VARIANT[data.regiao.nome as keyof typeof REGIAO_VARIANT] ??
+            BadgeVariant.DEFAULT
+          }
+        >
           {data.regiao.sigla}
         </Badge>
       </Header>

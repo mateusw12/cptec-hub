@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import { Card } from "@/components/ui/Card";
 import { theme } from "@/styles/theme";
+import { Card } from "../ui/Card.styles";
 
 export const StyledCard = styled(Card)<{ $selected: boolean }>`
   cursor: pointer;
