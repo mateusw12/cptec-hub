@@ -1,7 +1,9 @@
 "use client";
 
 import styled from "@emotion/styled";
-import { Map } from "lucide-react";
+import { Map, Hash } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { theme } from "@/styles/theme";
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
@@ -42,9 +44,40 @@ const LogoText = styled.span`
   }
 `;
 
+const Nav = styled.nav`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  margin-left: auto;
+`;
+
+const NavLink = styled(Link, {
+  shouldForwardProp: (prop) => prop !== "$active",
+})<{ $active: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  padding: ${theme.spacing.xs} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  border: 1px solid ${({ $active }) => ($active ? theme.colors.primary + "88" : "transparent")};
+  color: ${({ $active }) => ($active ? theme.colors.text : theme.colors.textMuted)};
+  background: ${({ $active }) => ($active ? theme.colors.primary + "18" : "transparent")};
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: ${theme.colors.text};
+    background: ${theme.colors.surfaceHover};
+  }
+`;
+
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export function Header() {
+  const pathname = usePathname();
+
   return (
     <HeaderWrapper>
       <Inner>
@@ -54,6 +87,16 @@ export function Header() {
             IBGE <span>Hub</span>
           </LogoText>
         </Logo>
+        <Nav>
+          <NavLink href="/" $active={pathname === "/"}>
+            <Map size={14} />
+            Estados
+          </NavLink>
+          <NavLink href="/cep" $active={pathname === "/cep"}>
+            <Hash size={14} />
+            CEP
+          </NavLink>
+        </Nav>
       </Inner>
     </HeaderWrapper>
   );
