@@ -1,72 +1,21 @@
 "use client";
 
-import styled from "@emotion/styled";
 import { Users, MapPin } from "lucide-react";
 import { theme } from "@/styles/theme";
-import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { useRouter } from "next/navigation";
 import { useIbgeStore } from "@/store/ibgeStore";
+import { BadgeVariant, REGIAO_VARIANT } from "@/lib/enum";
 import type { UfDTO } from "@/lib/dtos";
-
-// ─── Styles ──────────────────────────────────────────────────────────────────
-
-const StyledCard = styled(Card)<{ $selected: boolean }>`
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.md};
-  outline: none;
-
-  ${({ $selected }) =>
-    $selected &&
-    `
-    border-color: ${theme.colors.primary};
-    box-shadow: ${theme.shadows.glow};
-    background: ${theme.colors.surfaceHover};
-  `}
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const SiglaWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-`;
-
-const Sigla = styled.span`
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: ${theme.colors.text};
-  line-height: 1;
-`;
-
-const Nome = styled.p`
-  font-size: 0.85rem;
-  color: ${theme.colors.textMuted};
-  margin: 0;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  padding-top: ${theme.spacing.sm};
-  border-top: 1px solid ${theme.colors.border};
-`;
-
-const MetaItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.75rem;
-  color: ${theme.colors.textMuted};
-`;
+import {
+  Footer,
+  Header,
+  MetaItem,
+  Nome,
+  Sigla,
+  SiglaWrapper,
+  StyledCard,
+} from "./UfCard.styles";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -76,17 +25,6 @@ function formatPopulacao(pop: number | undefined | null): string {
   if (pop >= 1_000) return `${(pop / 1_000).toFixed(0)}K`;
   return pop.toString();
 }
-
-const REGIAO_VARIANT: Record<
-  string,
-  "default" | "accent" | "warning" | "danger" | "secondary"
-> = {
-  Norte: "accent",
-  Nordeste: "warning",
-  "Centro-Oeste": "secondary",
-  Sudeste: "default",
-  Sul: "danger",
-};
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
@@ -117,7 +55,7 @@ export function UfCard({ data }: UfCardProps) {
         <SiglaWrapper>
           <Sigla>{data.sigla}</Sigla>
         </SiglaWrapper>
-        <Badge variant={REGIAO_VARIANT[data.regiao.nome] ?? "default"}>
+        <Badge variant={REGIAO_VARIANT[data.regiao.nome as keyof typeof REGIAO_VARIANT] ?? BadgeVariant.DEFAULT}>
           {data.regiao.sigla}
         </Badge>
       </Header>

@@ -1,35 +1,10 @@
 "use client";
 
-import styled from "@emotion/styled";
 import { Percent, Loader2, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { useTaxas } from "@/hooks/useTaxas";
 import { theme } from "@/styles/theme";
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: ${theme.spacing.md};
-`;
-
-const TaxaNome = styled.p`
-  margin: 0 0 ${theme.spacing.xs};
-  color: ${theme.colors.textMuted};
-  font-size: 0.78rem;
-`;
-
-const TaxaValor = styled.strong`
-  color: ${theme.colors.text};
-  font-size: 1.15rem;
-`;
-
-const Status = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  color: ${theme.colors.textMuted};
-  font-size: 0.875rem;
-`;
+import { Grid, Status, TaxaNome, TaxaValor } from "./TaxasHighlights.styles";
 
 export function TaxasHighlights() {
   const { data, isLoading, isError } = useTaxas();
