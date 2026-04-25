@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { CptecService } from "@/services/api/cptec";
-import { IbgeService } from "@/services/api/ibge";
+import { CptecService } from "@/services/cptec/cptec";
+import { IbgeService } from "@/services/ibge/ibge";
 
 const QUERY_KEYS = {
   cities: (term: string) => ["locations", "cities", term] as const,

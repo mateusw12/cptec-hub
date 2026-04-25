@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { CptecService } from "@/services/api/cptec";
+import { CptecService } from "@/services/cptec/cptec";
 
 const QUERY_KEYS = {
   ocean: (cityCode: number) => ["ocean", cityCode] as const,

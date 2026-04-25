@@ -2,7 +2,7 @@
 
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import EmotionRegistry from "@/lib/emotion-registry";
+import EmotionRegistry from "@/lib/emotion/emotion-registry";
 
 const queryClient = new QueryClient({
   defaultOptions: {
