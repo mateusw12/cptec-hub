@@ -3,109 +3,20 @@
 import { Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import styled from "@emotion/styled";
 import { CloudSun } from "lucide-react";
 import { theme } from "@/styles/theme";
-
-// ─── Styles ──────────────────────────────────────────────────────────────────
-
-const Page = styled.div`
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${theme.colors.background};
-  padding: ${theme.spacing.lg};
-`;
-
-const Card = styled.div`
-  background: ${theme.colors.surface};
-  border: 1px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.lg};
-  padding: ${theme.spacing["2xl"]};
-  width: 100%;
-  max-width: 380px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${theme.spacing.xl};
-  box-shadow: ${theme.shadows.card};
-`;
-
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-`;
-
-const LogoText = styled.span`
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: ${theme.colors.text};
-  letter-spacing: -0.02em;
-
-  span {
-    color: ${theme.colors.secondary};
-  }
-`;
-
-const Headline = styled.div`
-  text-align: center;
-`;
-
-const Title = styled.h1`
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: ${theme.colors.text};
-  margin: 0 0 6px;
-`;
-
-const Subtitle = styled.p`
-  font-size: 0.82rem;
-  color: ${theme.colors.textMuted};
-  margin: 0;
-  line-height: 1.5;
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background: ${theme.colors.border};
-`;
-
-const GoogleButton = styled.button`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${theme.spacing.sm};
-  padding: 12px ${theme.spacing.lg};
-  background: #fff;
-  color: #3c4043;
-  border: 1px solid #dadce0;
-  border-radius: ${theme.borderRadius.md};
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.15s, box-shadow 0.15s;
-
-  &:hover {
-    background: #f8f9fa;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
-  }
-
-  &:active {
-    background: #f1f3f4;
-  }
-`;
-
-const Footer = styled.p`
-  font-size: 0.72rem;
-  color: ${theme.colors.textMuted};
-  text-align: center;
-  margin: 0;
-  line-height: 1.6;
-`;
+import {
+  Card,
+  Divider,
+  Footer,
+  GoogleButton,
+  Headline,
+  Logo,
+  LogoText,
+  Page,
+  Subtitle,
+  Title,
+} from "./page.styles";
 
 // ─── Google SVG logo ──────────────────────────────────────────────────────────
 
